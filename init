@@ -1,0 +1,20 @@
+#!/bin/bash
+set -e
+
+HTTP_PORT=${HTTP_PORT:-4000}
+GODOC_PORT=${GODOC_PORT:-6060}
+
+COMMIT="$(git rev-parse --short HEAD)"
+
+#use CompileDaemon to auto-rebuild
+#set path in compiledeamon
+PATH_TO_WATCH=$GOPATH"/src/gitlab.opendriverslog.de/odl"
+BUILD_CMD="go install gitlab.opendriverslog.de/odl/goodl"
+FOLLOW_CMD="go run "$PATH_TO_WATCH"/goodl/goodl.go"
+
+echo "running godoc... at "${GODOC_PORT}
+godoc -http=:$GODOC_PORT -v=true -index &
+
+echo "run the deamon... "
+cd /go/bin/
+./CompileDaemon -directory="$PATH_TO_WATCH" -build="$BUILD_CMD" -recursive=true -command="$FOLLOW_CMD" -color=true
