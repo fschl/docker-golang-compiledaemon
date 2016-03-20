@@ -8,12 +8,14 @@ COMMIT="$(git rev-parse --short HEAD)"
 
 #use CompileDaemon to auto-rebuild
 #set path in compiledeamon
-PATH_TO_WATCH=$GOPATH"/src/gitlab.opendriverslog.de/odl"
-BUILD_CMD="go install gitlab.opendriverslog.de/odl/goodl"
-FOLLOW_CMD="go run "$PATH_TO_WATCH"/goodl/goodl.go"
+SITE=github.com
+USER=fschl
+REPO=glide
+MAIN_FILE=glide.go
 
-echo "running godoc... at "${GODOC_PORT}
-godoc -http=:$GODOC_PORT -v=true -index &
+PATH_TO_WATCH=$GOPATH"/src/$SITE/$USER/$REPO"
+BUILD_CMD="go install $PATH_TO_WATCH"
+FOLLOW_CMD="go run "$PATH_TO_WATCH"/"$MAIN_FILE
 
 echo "run the deamon... "
 cd /go/bin/
